@@ -1,0 +1,42 @@
+CONFIGURAÇÃO DO QR CODE E ACESSO ADMINISTRATIVO
+
+----- 1) Configure o endereço de rede do notebook -----
+Antes de iniciar o sistema, configure o endereço que será utilizado para gerar o QR Code.
+No arquivo (src/main/resources/application.properties), localize a seguinte configuração:
+
+    painel.url-publica=${PAINEL_URL_PUBLICA:http://localhost:8080}
+
+Substitua "localhost" pelo endereço IPv4 do computador que está executando, mantendo a porta 8080.
+Para descobrir o endereço, abra o Prompt de Comando do Windows e execute:
+
+    ipconfig
+
+Procure o campo (Endereço IPv4) na conexão Wi-Fi ou Ethernet que estiver utilizando.
+Exemplo de configuração (utilize o seu próprio endereço IPv4):
+
+    painel.url-publica=http://SEU_IP_IPV4:8080
+
+Essa configuração permite que os dispositivos conectados à mesma rede acessem o display pelo QR Code.
+
+----- 2) Configure o acesso administrativo -----
+No mesmo arquivo (application.properties), localize:
+
+    spring.security.user.name=${PAINEL_ADMIN_USUARIO:admin}
+    spring.security.user.password=${PAINEL_ADMIN_SENHA:2232}
+
+Altere o usuário administrativo padrão e a senha para sua preferência
+
+----- 3) Inicie o sistema -----
+Execute o projeto normalmente pela IDE ou pelo Maven.
+Na primeira compilação, o Maven precisará baixar as dependências necessárias, para gerar o QR Code.
+
+----- 4) Acesso pelo celular -----
+Para acompanhar as senhas pelo celular:
+
+- O celular e o notebook precisam estar conectados à mesma rede local.
+- O celular precisa conseguir acessar a porta 8080 do notebook.
+- Caso solicite autorização, permita o acesso do Java em redes privadas.
+- Não utilize localhost na configuração do QR Code, pois esse endereço faz referência ao próprio dispositivo.
+
+----- 5) Observação -----
+O endereço IPv4 pode mudar dependendo da rede utilizada. Caso isso aconteça, consulte novamente o ipconfig.

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="30">
+    <title>Dashboard - Painel de Senhas</title>
+    <link rel="stylesheet" href="/style.css?v=5">
+</head>
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo">Painel de Senhas</div>
+        <nav class="menu">
+            <a href="/">🏠 Principal</a>
+            <a href="/dashboard" class="menu-ativo">📊 Dashboard</a>
+            <a href="/display" target="_blank">🖥️ Display</a>
+        </nav>
+    </aside>
+
+    <main class="content dashboard-content">
+        <h1>Dashboard</h1>
+        <p class="subtitle">Indicadores de desempenho dos atendimentos</p>
+
+        <section class="dashboard-section">
+            <h2>Atendimentos realizados</h2>
+            <div class="dashboard-grid">
+                <article class="indicador-card indicador-destaque">
+                    <span class="indicador-label">Atendimentos hoje</span>
+                    <strong class="indicador-valor" th:text="${stats.atendimentosHoje}">0</strong>
+                    <span class="indicador-legenda">Atendimentos finalizados hoje</span>
+                </article>
+
+                <article class="indicador-card">
+                    <span class="indicador-label">Tempo médio de atendimento hoje</span>
+                    <strong class="indicador-valor indicador-verde"
+                            th:text="${stats.quantidadeAtendimentosComTempo > 0 ? atendimentoMedioFormatado : '--:--'}">--:--</strong>
+                    <span class="indicador-legenda">
+                        Duração média entre chamada e finalização.
+                        <span th:text="${stats.quantidadeAtendimentosComTempo}">0</span>
+                        atendimentos considerados.
+                    </span>
+                </article>
+            </div>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Tempo médio de espera hoje</h2>
+            <div class="dashboard-grid">
+                <article class="indicador-card">
+                    <span class="indicador-label">Senhas comuns</span>
+                    <strong class="indicador-valor indicador-azul"
+                            th:text="${stats.quantidadeEsperaNormal > 0 ? esperaNormalFormatada : '--:--'}">--:--</strong>
+                    <span class="indicador-legenda">
+                        <span th:text="${stats.quantidadeEsperaNormal}">0</span>
+                        chamadas com horários válidos
+                    </span>
+                </article>
+
+                <article class="indicador-card">
+                    <span class="indicador-label">Senhas prioritárias</span>
+                    <strong class="indicador-valor indicador-laranja"
+                            th:text="${stats.quantidadeEsperaPrioritaria > 0 ? esperaPrioritariaFormatada : '--:--'}">--:--</strong>
+                    <span class="indicador-legenda">
+                        <span th:text="${stats.quantidadeEsperaPrioritaria}">0</span>
+                        chamadas com horários válidos
+                    </span>
+                </article>
+            </div>
+        </section>
+
+
+        <p class="dashboard-nota">
+            Os indicadores de tempo consideram somente registros com os horários necessários.
+            Senhas apenas emitidas ou chamadas, mas não finalizadas, não entram no total de atendimentos realizados.
+        </p>
+    </main>
+</div>
+</body>
+</html>

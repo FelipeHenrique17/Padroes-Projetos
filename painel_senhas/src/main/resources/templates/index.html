@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Senhas</title>
+    <link rel="stylesheet" href="style.css?v=5">
+</head>
+
+<body>
+<div class="container">
+    <aside class="sidebar">
+        <div class="logo">Painel de Senhas</div>
+        <nav class="menu">
+            <a href="/">🏠 Principal</a>
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/display" target="_blank">🖥️ Display</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <h1>Painel Principal</h1>
+        <div class="painel-row">
+        <div class="senha-card">
+            <h2>Senha chamada</h2>
+
+            <span th:if="${senhaAtual != null}"
+                  class="badge"
+                  th:classappend="${senhaAtual.prioritaria} ? 'badge-prioritaria' : 'badge-normal'"
+                  th:text="${senhaAtual.tipo}">Normal</span>
+
+            <div class="senha-guiche-row">
+                <div class="senha"
+                     th:classappend="${senhaAtual != null and senhaAtual.prioritaria} ? 'senha-prioritaria' : ''">
+                    <span th:if="${senhaAtual != null}" th:text="${senhaAtual.codigo}">A000</span>
+                    <span th:if="${senhaAtual == null}">---</span>
+                </div>
+
+                <p class="guiche-atual" th:if="${senhaAtual != null}">
+                    Guichê <span th:text="${senhaAtual.guiche}">1</span>
+                </p>
+            </div>
+
+            <details class="fila-status">
+                <summary>
+                    Senhas aguardando: <strong th:text="${quantidadeNaFila}">0</strong>
+                    <span class="fila-seta">⌄</span>
+                </summary>
+                <ul class="fila-lista">
+                    <li th:each="senhaFila : ${senhasAguardando}">
+                        <span class="fila-codigo" th:text="${senhaFila.codigo}">N001</span>
+                        <span class="badge"
+                              th:classappend="${senhaFila.prioritaria} ? 'badge-prioritaria' : 'badge-normal'"
+                              th:text="${senhaFila.tipo}">Normal</span>
+                    </li>
+                    <li th:if="${senhasAguardando.isEmpty()}" class="fila-vazia">
+                        Não há senhas na fila.
+                    </li>
+                </ul>
+            </details>
+
+            <form th:action="@{/emitir}" method="post" class="form-chamada emissao-form">
+                <h3>Emitir nova senha</h3>
+                <div class="botoes emissao-botoes">
+                    <button type="submit" name="tipo" value="normal" class="btn btn-normal">
+                        Emitir senha normal
+                    </button>
+                    <button type="submit" name="tipo" value="prioritaria" class="btn btn-prioritaria">
+                        Emitir senha prioritária
+                    </button>
+                </div>
+            </form>
+
+            <form th:action="@{/chamar-proxima}" method="post" class="form-chamada">
+                <div class="guiche-escolha">
+                    <label for="guiche">Guichê</label>
+                    <select name="guiche" id="guiche">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-chamar"
+                        th:disabled="${quantidadeNaFila == 0 or emAtendimento}">
+                    Chamar próxima senha
+                </button>
+                <p class="ajuda-fluxo" th:if="${emAtendimento}">
+                    Finalize o atendimento atual antes de chamar outra senha.
+                </p>
+                <p class="ajuda-fluxo" th:if="${quantidadeNaFila == 0 and !emAtendimento}">
+                    Não há senhas aguardando.
+                </p>
+            </form>
+
+            <form th:action="@{/finalizar}" method="post" th:if="${emAtendimento}">
+                <button type="submit" class="btn btn-finalizar">
+                    Finalizar atendimento
+                </button>
+            </form>
+        </div>
+        <aside class="historico-card">
+            <h2>Senhas anteriores</h2>
+
+            <ul class="historico-lista">
+                <li th:each="senha : ${anteriores}">
+                    <div class="historico-info">
+                        <span th:text="${senha.codigo}">A001</span>
+
+                        <span class="badge"
+                              th:classappend="${senha.prioritaria} ? 'badge-prioritaria' : 'badge-normal'"
+                              th:text="${senha.tipo}">Normal</span>
+                    </div>
+
+                    <span class="guiche-tag">
+                        Guichê <span th:text="${senha.guiche}">1</span>
+                    </span>
+                </li>
+
+                <li th:if="${anteriores.isEmpty()}" class="historico-vazio">
+                    Nenhuma senha anterior
+                </li>
+            </ul>
+        </aside>
+        </div>
+    </main>
+</div>
+</body>
+</html>

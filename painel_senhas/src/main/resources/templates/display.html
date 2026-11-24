@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="4">
+    <title>Display - Painel de Senhas</title>
+    <link rel="stylesheet" href="/style.css?v=4">
+</head>
+
+<body class="display-body">
+<div class="display-container">
+    <header class="display-header">
+        <div class="display-titulo">
+            <strong>Painel de Senhas</strong>
+            <small>Acompanhamento em tempo real</small>
+        </div>
+        <div class="relogio" id="relogio"></div>
+    </header>
+
+    <div class="display-main">
+        <!-- Coluna principal: senha atual e tempos médios -->
+        <div class="display-coluna-principal">
+            <section class="display-destaque"
+                     th:classappend="${senhaAtual != null and senhaAtual.prioritaria} ? 'destaque-prioritaria' : ''">
+
+                <span th:if="${senhaAtual != null}"
+                      class="badge-display"
+                      th:classappend="${senhaAtual.prioritaria} ? 'badge-prioritaria' : 'badge-normal'"
+                      th:text="${senhaAtual.tipo}">Normal</span>
+
+                <span th:if="${senhaAtual == null}" class="badge-display badge-normal">Aguardando</span>
+
+                <div class="senha-display" th:text="${senhaAtual != null ? senhaAtual.codigo : '---'}">A000</div>
+
+                <div class="guiche-display">
+                    <span class="guiche-display-label">Guichê</span>
+                    <span class="guiche-display-numero" th:text="${senhaAtual != null ? senhaAtual.guiche : '-'}">1</span>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Histórico lateral -->
+        <aside class="display-anteriores">
+            <h2>Senhas anteriores</h2>
+            <ul class="anteriores-lista">
+                <li th:each="senha : ${anteriores}">
+                    <span class="anteriores-codigo" th:text="${senha.codigo}">A000</span>
+                    <span class="badge"
+                          th:classappend="${senha.prioritaria} ? 'badge-prioritaria' : 'badge-normal'"
+                          th:text="${senha.tipo}">Normal</span>
+                    <span class="anteriores-guiche">Guichê <span th:text="${senha.guiche}">1</span></span>
+                </li>
+                <li th:if="${anteriores.isEmpty()}" class="anteriores-vazio">
+                    Nenhuma senha anterior
+                </li>
+            </ul>
+        </aside>
+    </div>
+
+    <footer class="display-footer">
+        <div class="display-qr display-qr-rodape">
+            <img th:src="${qrCode}" alt="QR Code para acompanhar pelo celular">
+            <span><strong>Acompanhe pelo celular</strong><small>Escaneie o QR Code</small></span>
+        </div>
+        <div class="display-tempo-card display-tempo-normal">
+            <span>Tempo médio de espera — Normal</span>
+            <strong th:text="${esperaNormalFormatada}">00:00</strong>
+        </div>
+        <div class="display-tempo-card display-tempo-prioritaria">
+            <span>Tempo médio de espera — Prioritária</span>
+            <strong th:text="${esperaPrioritariaFormatada}">00:00</strong>
+        </div>
+    </footer>
+</div>
+
+<script>
+    function atualizarRelogio() {
+        var agora = new Date();
+        var horas = String(agora.getHours()).padStart(2, '0');
+        var minutos = String(agora.getMinutes()).padStart(2, '0');
+        document.getElementById('relogio').textContent = horas + ':' + minutos;
+    }
+    atualizarRelogio();
+    setInterval(atualizarRelogio, 1000 * 30);
+</script>
+</body>
+</html>

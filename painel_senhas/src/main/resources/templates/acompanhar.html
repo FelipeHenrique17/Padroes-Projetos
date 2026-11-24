@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="5">
+    <meta name="theme-color" content="#10213b">
+    <title>Acompanhar senha</title>
+    <link rel="stylesheet" href="/style.css?v=mobile2">
+</head>
+<body class="acompanhar-body">
+<main class="acompanhar-container">
+    <header class="acompanhar-header">
+        <div class="acompanhar-marca"><span class="acompanhar-icone">✓</span><div><strong>Painel de Senhas</strong><small>Acompanhamento em tempo real</small></div></div>
+        <span class="acompanhar-status"><i></i> Atualiza automaticamente</span>
+    </header>
+
+    <section class="acompanhar-card-atual" th:classappend="${senhaAtual != null and senhaAtual.prioritaria} ? ' acompanhar-prioritaria' : ''">
+        <div class="acompanhar-card-topo"><span>Senha chamada</span><span class="acompanhar-badge" th:if="${senhaAtual != null}" th:text="${senhaAtual.tipo}">Normal</span><span class="acompanhar-badge" th:if="${senhaAtual == null}">Aguardando</span></div>
+        <div class="acompanhar-senha" th:text="${senhaAtual != null ? senhaAtual.codigo : '---'}">A000</div>
+        <div class="acompanhar-guiche"><span>Dirija-se ao</span><strong>Guichê <span th:text="${senhaAtual != null ? senhaAtual.guiche : '-'}">1</span></strong></div>
+        <p class="acompanhar-aviso" th:if="${senhaAtual == null}">Aguarde. Assim que uma senha for chamada, ela aparecerá aqui.</p>
+    </section>
+
+    <section class="acompanhar-tempos">
+        <article class="acompanhar-tempo normal"><span>Espera média · Normal</span><strong th:text="${esperaNormalFormatada}">00:00</strong></article>
+        <article class="acompanhar-tempo prioritaria"><span>Espera média · Prioritária</span><strong th:text="${esperaPrioritariaFormatada}">00:00</strong></article>
+    </section>
+
+    <section class="acompanhar-historico">
+        <div class="acompanhar-secao-titulo"><h2>Últimas chamadas</h2><span>Recentes</span></div>
+        <ul>
+            <li th:each="senha : ${anteriores}"><div><strong th:text="${senha.codigo}">A001</strong><small th:classappend="${senha.prioritaria} ? ' senha-historico-prioritaria' : ' senha-historico-normal'" th:text="${senha.tipo}">Normal</small></div><span class="acompanhar-guiche-tag">Guichê <b th:text="${senha.guiche}">1</b></span></li>
+            <li class="acompanhar-vazio" th:if="${anteriores.isEmpty()}">Ainda não há chamadas anteriores.</li>
+        </ul>
+    </section>
+    <footer class="acompanhar-footer">Esta página é somente para consulta. Atualização automática a cada 5 segundos.</footer>
+</main>
+</body>
+</html>

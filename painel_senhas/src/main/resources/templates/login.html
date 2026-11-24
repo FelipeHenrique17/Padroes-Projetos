@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrar - Painel de Senhas</title>
+    <link rel="stylesheet" href="/style.css?v=6">
+</head>
+<body class="login-body">
+<main class="login-wrapper">
+    <section class="login-card">
+        <div class="login-icone">🎫</div>
+        <h1>Painel de Senhas</h1>
+        <p class="login-subtitulo">Acesse a área administrativa</p>
+
+        <div class="login-alerta" th:if="${param.error}">Usuário ou senha inválidos. Tente novamente.</div>
+        <div class="login-sucesso" th:if="${param.logout}">Você saiu do sistema com segurança.</div>
+
+        <form th:action="@{/login}" method="post" class="login-form">
+            <label for="username">Usuário</label>
+            <input id="username" name="username" type="text" placeholder="Digite seu usuário" autocomplete="username" required autofocus>
+
+            <label for="password">Senha</label>
+            <input id="password" name="password" type="password" placeholder="Digite sua senha" autocomplete="current-password" required>
+
+            <button type="submit">Entrar no sistema</button>
+        </form>
+        <div class="login-rodape">Acesso restrito à equipe administrativa</div>
+    </section>
+</main>
+</body>
+</html>
