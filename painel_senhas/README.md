@@ -210,6 +210,15 @@ Para utilizar o acompanhamento pelo celular:
 7. Consulte o dashboard para acompanhar os indicadores.
 8. Utilize o QR Code para permitir o acompanhamento pelo celular.
 
+## 👥 Integrantes 
+
+1. Anael Monte Paz de Araújo
+2. Felipe Henrique de Oliveira
+3. Gabriel Aparecido Messias
+4. Moisés Kennedy Batista Mendes
+5. Vinícius Carrijo de Souza
+6. Vinícius Meloni
+
 ## 🎓 Projeto Integrador
 
 Projeto desenvolvido como parte do curso de Análise e Desenvolvimento de Sistemas da FATEC Franca, aplicando conceitos de orientação a objetos, desenvolvimento web com Java, arquitetura MVC e padrões de projeto.
